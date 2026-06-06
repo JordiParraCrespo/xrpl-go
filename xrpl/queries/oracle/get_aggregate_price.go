@@ -41,6 +41,15 @@ func (r *GetAggregatePriceRequest) APIVersion() int {
 
 // Validate ensures the GetAggregatePriceRequest contains valid fields.
 func (r *GetAggregatePriceRequest) Validate() error {
+	if r.BaseAsset == "" {
+		return ErrNoBaseAsset
+	}
+	if r.QuoteAsset == "" {
+		return ErrNoQuoteAsset
+	}
+	if len(r.Oracles) == 0 {
+		return ErrNoOracles
+	}
 	return nil
 }
 

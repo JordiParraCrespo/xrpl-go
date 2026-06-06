@@ -48,8 +48,22 @@ func (*FindCreateRequest) APIVersion() int {
 }
 
 // Validate verifies the FindCreateRequest parameters.
-// TODO: implement V2.
-func (*FindCreateRequest) Validate() error {
+func (r *FindCreateRequest) Validate() error {
+	if r.Subcommand == "" {
+		return ErrNoSubcommand
+	}
+	if r.Subcommand != Create {
+		return ErrInvalidSubcommand
+	}
+	if r.SourceAccount == "" {
+		return ErrNoSourceAccount
+	}
+	if r.DestinationAccount == "" {
+		return ErrNoDestinationAccount
+	}
+	if r.DestinationAmount == nil {
+		return ErrNoDestinationAmount
+	}
 	return nil
 }
 
@@ -70,8 +84,13 @@ func (*FindCloseRequest) Method() string {
 }
 
 // Validate verifies the FindCloseRequest parameters.
-// TODO: implement V2.
-func (*FindCloseRequest) Validate() error {
+func (r *FindCloseRequest) Validate() error {
+	if r.Subcommand == "" {
+		return ErrNoSubcommand
+	}
+	if r.Subcommand != Close {
+		return ErrInvalidSubcommand
+	}
 	return nil
 }
 
@@ -92,8 +111,13 @@ func (*FindStatusRequest) Method() string {
 }
 
 // Validate verifies the FindStatusRequest parameters.
-// TODO: implement V2.
-func (*FindStatusRequest) Validate() error {
+func (r *FindStatusRequest) Validate() error {
+	if r.Subcommand == "" {
+		return ErrNoSubcommand
+	}
+	if r.Subcommand != Status {
+		return ErrInvalidSubcommand
+	}
 	return nil
 }
 

@@ -66,8 +66,10 @@ func (*FeatureOneRequest) APIVersion() int {
 }
 
 // Validate verifies the FeatureOneRequest parameters.
-// TODO: implement V2 validation logic.
-func (*FeatureOneRequest) Validate() error {
+func (r *FeatureOneRequest) Validate() error {
+	if r.Feature == "" {
+		return ErrNoFeature
+	}
 	return nil
 }
 

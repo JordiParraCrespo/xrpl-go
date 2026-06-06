@@ -40,6 +40,9 @@ func (r *GatewayBalancesRequest) APIVersion() int {
 
 // Validate performs validation on GatewayBalancesRequest.
 func (r *GatewayBalancesRequest) Validate() error {
+	if r.Account == "" {
+		return ErrNoAccountID
+	}
 	return nil
 }
 

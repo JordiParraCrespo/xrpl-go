@@ -96,6 +96,17 @@ func init() {
 		},
 	})
 
+	// SubmitRequest models xrpl.js SubmitRequest, which requires tx_blob.
+	Register(Case{
+		Name:        "transactions.SubmitRequest",
+		JSInterface: "SubmitRequest",
+		Valid: func() Validatable {
+			return &transactions.SubmitRequest{
+				TxBlob: "1200002280000000",
+			}
+		},
+	})
+
 	// TxRequest models xrpl.js TxRequest. Per jsspec.json every field is
 	// optional (transaction/ctid/binary/min_ledger/max_ledger); xrpl.js only
 	// documents the "exactly one of transaction or ctid" rule in prose, and the
@@ -123,6 +134,16 @@ func init() {
 					"TransactionType": "Payment",
 					"Account":         "rG1QQv2nh2gr7RCZ1P8YYcBUKCCN633jCn",
 				},
+			}
+		},
+	})
+
+	Register(Case{
+		Name:        "transactions_v1.SubmitRequest",
+		JSInterface: "SubmitRequest",
+		Valid: func() Validatable {
+			return &transactionsv1.SubmitRequest{
+				TxBlob: "1200002280000000",
 			}
 		},
 	})

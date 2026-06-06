@@ -19,3 +19,30 @@ func TestSubmitRequest(t *testing.T) {
 	}
 
 }
+
+func TestSubmitRequest_Validate(t *testing.T) {
+	tests := []struct {
+		name    string
+		request SubmitRequest
+		wantErr error
+	}{
+		{
+			name:    "pass - valid request",
+			request: SubmitRequest{TxBlob: "1200002280000000"},
+			wantErr: nil,
+		},
+		{
+			name:    "fail - missing tx_blob",
+			request: SubmitRequest{},
+			wantErr: ErrNoTxBlob,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := tt.request.Validate(); err != tt.wantErr {
+				t.Errorf("Validate() error = %v, want %v", err, tt.wantErr)
+			}
+		})
+	}
+}

@@ -30,8 +30,10 @@ func (*CurrenciesRequest) APIVersion() int {
 }
 
 // Validate checks the CurrenciesRequest for correctness.
-// TODO: Implement V2
-func (*CurrenciesRequest) Validate() error {
+func (r *CurrenciesRequest) Validate() error {
+	if r.Account == "" {
+		return ErrNoAccountID
+	}
 	return nil
 }
 

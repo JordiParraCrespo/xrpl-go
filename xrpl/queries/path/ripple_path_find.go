@@ -35,8 +35,16 @@ func (*RipplePathFindRequest) APIVersion() int {
 }
 
 // Validate checks that the RipplePathFindRequest is correctly formed.
-// TODO implement V2
-func (*RipplePathFindRequest) Validate() error {
+func (r *RipplePathFindRequest) Validate() error {
+	if r.SourceAccount == "" {
+		return ErrNoSourceAccount
+	}
+	if r.DestinationAccount == "" {
+		return ErrNoDestinationAccount
+	}
+	if r.DestinationAmount == nil {
+		return ErrNoDestinationAmount
+	}
 	return nil
 }
 

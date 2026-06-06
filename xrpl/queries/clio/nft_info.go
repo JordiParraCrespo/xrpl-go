@@ -29,7 +29,10 @@ func (*NFTInfoRequest) APIVersion() int {
 }
 
 // Validate checks the NFTInfoRequest parameters for validity.
-func (*NFTInfoRequest) Validate() error {
+func (r *NFTInfoRequest) Validate() error {
+	if r.NFTokenID == "" {
+		return ErrNoNFTokenID
+	}
 	return nil
 }
 

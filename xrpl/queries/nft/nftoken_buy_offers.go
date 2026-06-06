@@ -32,8 +32,10 @@ func (*NFTokenBuyOffersRequest) APIVersion() int {
 }
 
 // Validate ensures the NFTokenBuyOffersRequest is valid.
-// TODO: Implement V2
-func (*NFTokenBuyOffersRequest) Validate() error {
+func (r *NFTokenBuyOffersRequest) Validate() error {
+	if r.NFTokenID == "" {
+		return ErrNoNFTokenID
+	}
 	return nil
 }
 

@@ -52,8 +52,10 @@ func (*ObjectsRequest) APIVersion() int {
 }
 
 // Validate performs validation of the ObjectsRequest.
-// TODO: implement V2.
-func (*ObjectsRequest) Validate() error {
+func (r *ObjectsRequest) Validate() error {
+	if r.Account == "" {
+		return ErrNoAccountID
+	}
 	return nil
 }
 

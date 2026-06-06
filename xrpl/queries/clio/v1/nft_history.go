@@ -34,8 +34,10 @@ func (*NFTHistoryRequest) APIVersion() int {
 }
 
 // Validate checks the NFTHistoryRequest for correctness.
-// TODO: Implement V2
-func (*NFTHistoryRequest) Validate() error {
+func (r *NFTHistoryRequest) Validate() error {
+	if r.NFTokenID == "" {
+		return ErrNoNFTokenID
+	}
 	return nil
 }
 

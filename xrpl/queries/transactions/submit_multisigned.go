@@ -29,7 +29,10 @@ func (*SubmitMultisignedRequest) APIVersion() int {
 }
 
 // Validate verifies the SubmitMultisignedRequest parameters.
-func (*SubmitMultisignedRequest) Validate() error {
+func (r *SubmitMultisignedRequest) Validate() error {
+	if r.Tx == nil {
+		return ErrNoTxJSON
+	}
 	return nil
 }
 
