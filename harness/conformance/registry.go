@@ -13,8 +13,17 @@
 //   - for each field xrpl.js marks required, zeroes that field on a fresh valid
 //     instance and asserts Validate() now reports an error.
 //
-// This makes "Go validation conforms to the xrpl.js request model" a machine-
-// checked invariant rather than a manual review step.
+// Precise guarantee and its limits. Because only the field under test is changed
+// from a known-valid instance, an error there proves that field's presence is
+// enforced. The harness therefore proves the required-field-subset direction:
+// every xrpl.js-required field is enforced by Go. It deliberately does NOT
+// prove the converse (that no optional field is over-validated), nor the
+// identity of the returned error, nor any value-format rule — those are covered
+// by the per-request table tests. Two blind spots to keep in mind when adding
+// cases: a required field whose Go zero value is itself legal (so zeroing would
+// not trigger an error) must be covered by a table test and listed in
+// SkipRequired; and the harness only zeroes top-level fields, so nested
+// object/element rules are out of its scope by design.
 package conformance
 
 import (

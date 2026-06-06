@@ -107,6 +107,17 @@ func init() {
 		},
 	})
 
+	// EntryRequest models xrpl.js TransactionEntryRequest, which requires tx_hash.
+	Register(Case{
+		Name:        "transactions.EntryRequest",
+		JSInterface: "TransactionEntryRequest",
+		Valid: func() Validatable {
+			return &transactions.EntryRequest{
+				TxHash: "E08D6E9754025BA2534A78707605E0601F03ACE063687A0CA1BDDACFCD1698C7",
+			}
+		},
+	})
+
 	// TxRequest models xrpl.js TxRequest. Per jsspec.json every field is
 	// optional (transaction/ctid/binary/min_ledger/max_ledger); xrpl.js only
 	// documents the "exactly one of transaction or ctid" rule in prose, and the
@@ -144,6 +155,16 @@ func init() {
 		Valid: func() Validatable {
 			return &transactionsv1.SubmitRequest{
 				TxBlob: "1200002280000000",
+			}
+		},
+	})
+
+	Register(Case{
+		Name:        "transactions_v1.EntryRequest",
+		JSInterface: "TransactionEntryRequest",
+		Valid: func() Validatable {
+			return &transactionsv1.EntryRequest{
+				TxHash: "E08D6E9754025BA2534A78707605E0601F03ACE063687A0CA1BDDACFCD1698C7",
 			}
 		},
 	})

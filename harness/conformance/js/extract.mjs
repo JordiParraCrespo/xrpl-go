@@ -11,6 +11,24 @@
 // The spec is keyed by the TypeScript interface name (e.g. "AccountInfoRequest")
 // so that Go requests which split a single JS request into several structs can
 // each point at the right interface.
+//
+// Known limitations (safe today against the pinned sources, but worth knowing
+// if either codebase evolves):
+//   - Only `export interface XxxRequest` declarations are parsed. Requests
+//     defined as intersection type aliases (`export type XxxRequest = Base &
+//     {...}`, e.g. simulate) are NOT extracted. This is fail-safe: registering
+//     a Go case against such an interface makes the conformance test fail loudly
+//     ("interface not found"), rather than silently passing. None of these have
+//     a Go counterpart today.
+//   - `extends` is not resolved: only fields in the interface's own body are
+//     read. Required fields inherited from a base interface without being
+//     re-declared would be missed. Every base in the pinned sources contributes
+//     only optional/structural fields, and concrete requests re-declare their
+//     own required fields, so this is currently a no-op.
+//   - Field detection is line/brace based, not a full TS parse, so exotic
+//     shapes (multi-line conditional types, string-literal unions containing
+//     `//` or unbalanced braces) could be misread. None occur in the pinned
+//     `*Request` interfaces.
 
 import { readFileSync, readdirSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
@@ -67,8 +85,10 @@ function parseRequests(src) {
     const body = removeNested(src.slice(start, i - 1))
     const required = []
     const optional = []
-    // Match top-level field declarations: `name: type` or `name?: type`.
-    const fieldRe = /(^|\n)\s*([a-z_][A-Za-z0-9_]*)(\?)?\s*:/g
+    // Match top-level field declarations: `name: type` or `name?: type`,
+    // tolerating a leading `readonly` modifier so it is not mistaken for the
+    // field name.
+    const fieldRe = /(^|\n)\s*(?:readonly\s+)?([a-z_][A-Za-z0-9_]*)(\?)?\s*:/g
     let f
     while ((f = fieldRe.exec(body)) !== null) {
       const field = f[2]
