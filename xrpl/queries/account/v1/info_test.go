@@ -32,6 +32,37 @@ func TestAccountInfoRequest(t *testing.T) {
 	}
 }
 
+func TestInfoRequest_Validate(t *testing.T) {
+	tests := []struct {
+		name    string
+		request InfoRequest
+		wantErr error
+	}{
+		{
+			name: "pass - valid request",
+			request: InfoRequest{
+				Account:     "rG1QQv2nh2gr7RCZ1P8YYcBUKCCN633jCn",
+				LedgerIndex: common.Validated,
+			},
+			wantErr: nil,
+		},
+		{
+			name:    "fail - missing account",
+			request: InfoRequest{},
+			wantErr: ErrNoAccountID,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := tt.request.Validate()
+			if err != tt.wantErr {
+				t.Errorf("Validate() error = %v, want %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
 func TestAccountInfoResponse(t *testing.T) {
 	s := InfoResponse{
 		AccountData: typesv1.AccountData{

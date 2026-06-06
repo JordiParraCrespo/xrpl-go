@@ -30,6 +30,37 @@ func TestGatewayBalancesRequest(t *testing.T) {
 	}
 }
 
+func TestGatewayBalancesRequest_Validate(t *testing.T) {
+	tests := []struct {
+		name    string
+		request GatewayBalancesRequest
+		wantErr error
+	}{
+		{
+			name: "pass - valid request",
+			request: GatewayBalancesRequest{
+				Account:     "rLHmBn4fT92w4F6ViyYbjoizLTo83tHTHu",
+				LedgerIndex: common.Validated,
+			},
+			wantErr: nil,
+		},
+		{
+			name:    "fail - missing account",
+			request: GatewayBalancesRequest{},
+			wantErr: ErrNoAccountID,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := tt.request.Validate()
+			if err != tt.wantErr {
+				t.Errorf("Validate() error = %v, want %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
 func TestGatewayBalancesResponse(t *testing.T) {
 	s := GatewayBalancesResponse{
 		Account: "rLHmBn4fT92w4F6ViyYbjoizLTo83tHTHu",

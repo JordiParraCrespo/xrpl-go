@@ -23,6 +23,37 @@ func TestNFTInfoRequest(t *testing.T) {
 	}
 }
 
+func TestNFTInfoRequest_Validate(t *testing.T) {
+	tests := []struct {
+		name    string
+		request NFTInfoRequest
+		wantErr error
+	}{
+		{
+			name: "pass - valid request",
+			request: NFTInfoRequest{
+				NFTokenID:   "00080000B4F4AFC5FBCBD76873F18006173D2193467D3EE70000099B00000000",
+				LedgerIndex: common.Validated,
+			},
+			wantErr: nil,
+		},
+		{
+			name:    "fail - missing nft_id",
+			request: NFTInfoRequest{},
+			wantErr: ErrNoNFTokenID,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := tt.request.Validate()
+			if err != tt.wantErr {
+				t.Errorf("Validate() error = %v, want %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
 func TestNFTInfoResponse(t *testing.T) {
 	s := NFTInfoResponse{
 		NFTokenID:   "00080000B4F4AFC5FBCBD76873F18006173D2193467D3EE70000099B00000000",
