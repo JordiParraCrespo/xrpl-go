@@ -33,6 +33,19 @@ function stripComments(src) {
     .replace(/\/\/[^\n]*/g, '')
 }
 
+// Collapse nested object/array literals so only the top-level fields of the
+// interface remain. Inner fields (e.g. the items of `oracles: { account:
+// string }[]`) are properties of a nested shape, not request parameters, and
+// must not be mistaken for top-level required fields.
+function removeNested(body) {
+  let prev
+  do {
+    prev = body
+    body = body.replace(/\{[^{}]*\}/g, ' ')
+  } while (body !== prev)
+  return body
+}
+
 // Given the source of one file, find every `export interface XxxRequest ... { body }`
 // and return [{ name, requiredFields, optionalFields }].
 function parseRequests(src) {
@@ -51,7 +64,7 @@ function parseRequests(src) {
       else if (ch === '}') depth--
       i++
     }
-    const body = src.slice(start, i - 1)
+    const body = removeNested(src.slice(start, i - 1))
     const required = []
     const optional = []
     // Match top-level field declarations: `name: type` or `name?: type`.
