@@ -98,6 +98,19 @@ coverage-unit:
 	@go tool cover -html=coverage.out -o coverage.html
 	@echo "Coverage report generated at coverage.html"
 
+validate-conformance:
+	@echo "Running query-request validation conformance harness..."
+	@go test ./harness/conformance/...
+
+validate-coverage:
+	@echo "Checking Validate() coverage in query packages..."
+	@harness/validate_coverage.sh
+
+validate-jsspec:
+	@echo "Regenerating jsspec.json from xrpl.js (requires XRPLJS to point at a checkout)..."
+	@test -n "$(XRPLJS)" || (echo "set XRPLJS=<path to xrpl.js repo>" && exit 1)
+	@node harness/conformance/js/extract.mjs $(XRPLJS)/packages/xrpl/src/models/methods harness/conformance/jsspec.json
+
 benchmark:
 	@echo "Running Go benchmarks..."
 	@go test -bench=. ./...

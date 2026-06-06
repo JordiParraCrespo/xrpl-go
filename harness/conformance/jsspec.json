@@ -1,0 +1,498 @@
+{
+  "AMMInfoRequest": {
+    "file": "ammInfo.ts",
+    "required": [],
+    "optional": [
+      "amm_account",
+      "asset",
+      "asset2",
+      "account"
+    ]
+  },
+  "AccountChannelsRequest": {
+    "file": "accountChannels.ts",
+    "required": [
+      "account"
+    ],
+    "optional": [
+      "destination_account",
+      "limit",
+      "marker"
+    ]
+  },
+  "AccountCurrenciesRequest": {
+    "file": "accountCurrencies.ts",
+    "required": [
+      "account"
+    ],
+    "optional": [
+      "strict"
+    ]
+  },
+  "AccountInfoRequest": {
+    "file": "accountInfo.ts",
+    "required": [
+      "account"
+    ],
+    "optional": [
+      "queue",
+      "signer_lists",
+      "strict"
+    ]
+  },
+  "AccountLinesRequest": {
+    "file": "accountLines.ts",
+    "required": [
+      "account"
+    ],
+    "optional": [
+      "peer",
+      "ignore_default",
+      "limit",
+      "marker"
+    ]
+  },
+  "AccountNFTsRequest": {
+    "file": "accountNFTs.ts",
+    "required": [
+      "account"
+    ],
+    "optional": [
+      "limit",
+      "marker"
+    ]
+  },
+  "AccountObjectsRequest": {
+    "file": "accountObjects.ts",
+    "required": [
+      "account"
+    ],
+    "optional": [
+      "type",
+      "deletion_blockers_only",
+      "limit",
+      "marker"
+    ]
+  },
+  "AccountOffersRequest": {
+    "file": "accountOffers.ts",
+    "required": [
+      "account"
+    ],
+    "optional": [
+      "limit",
+      "marker",
+      "strict"
+    ]
+  },
+  "AccountTxRequest": {
+    "file": "accountTx.ts",
+    "required": [
+      "account"
+    ],
+    "optional": [
+      "ledger_index_min",
+      "ledger_index_max",
+      "binary",
+      "forward",
+      "limit",
+      "marker"
+    ]
+  },
+  "BaseRequest": {
+    "file": "baseMethod.ts",
+    "required": [],
+    "optional": []
+  },
+  "BookOffersRequest": {
+    "file": "bookOffers.ts",
+    "required": [
+      "taker_gets",
+      "taker_pays"
+    ],
+    "optional": [
+      "limit",
+      "taker",
+      "domain"
+    ]
+  },
+  "ChannelVerifyRequest": {
+    "file": "channelVerify.ts",
+    "required": [
+      "amount",
+      "channel_id",
+      "public_key",
+      "signature"
+    ],
+    "optional": []
+  },
+  "DepositAuthorizedRequest": {
+    "file": "depositAuthorized.ts",
+    "required": [
+      "source_account",
+      "destination_account"
+    ],
+    "optional": [
+      "credentials"
+    ]
+  },
+  "FeatureAllRequest": {
+    "file": "feature.ts",
+    "required": [],
+    "optional": [
+      "feature"
+    ]
+  },
+  "FeatureOneRequest": {
+    "file": "feature.ts",
+    "required": [
+      "feature"
+    ],
+    "optional": []
+  },
+  "FeeRequest": {
+    "file": "fee.ts",
+    "required": [],
+    "optional": []
+  },
+  "GatewayBalancesRequest": {
+    "file": "gatewayBalances.ts",
+    "required": [
+      "account"
+    ],
+    "optional": [
+      "strict",
+      "hotwallet"
+    ]
+  },
+  "GetAggregatePriceRequest": {
+    "file": "getAggregatePrice.ts",
+    "required": [
+      "base_asset",
+      "quote_asset",
+      "oracles",
+      "account",
+      "oracle_document_id"
+    ],
+    "optional": [
+      "trim",
+      "trim_threshold"
+    ]
+  },
+  "LedgerClosedRequest": {
+    "file": "ledgerClosed.ts",
+    "required": [],
+    "optional": []
+  },
+  "LedgerCurrentRequest": {
+    "file": "ledgerCurrent.ts",
+    "required": [],
+    "optional": []
+  },
+  "LedgerDataRequest": {
+    "file": "ledgerData.ts",
+    "required": [],
+    "optional": [
+      "binary",
+      "limit",
+      "marker",
+      "type"
+    ]
+  },
+  "LedgerEntryRequest": {
+    "file": "ledgerEntry.ts",
+    "required": [
+      "mpt_issuance_id",
+      "account",
+      "asset",
+      "currency",
+      "asset2",
+      "currency",
+      "subject",
+      "issuer",
+      "credentialType",
+      "owner",
+      "authorized",
+      "owner",
+      "seq",
+      "account",
+      "seq",
+      "accounts",
+      "currency",
+      "owner",
+      "ticket_sequence",
+      "locking_chain_door",
+      "locking_chain_issue",
+      "issuing_chain_door",
+      "issuing_chain_issue",
+      "xchain_owned_claim_id",
+      "locking_chain_door",
+      "locking_chain_issue",
+      "issuing_chain_door",
+      "issuing_chain_issue",
+      "xchain_owned_create_account_claim_id",
+      "account",
+      "authorize"
+    ],
+    "optional": [
+      "mpt_issuance",
+      "mptoken",
+      "amm",
+      "issuer",
+      "issuer",
+      "include_deleted",
+      "binary",
+      "index",
+      "account_root",
+      "check",
+      "credential",
+      "deposit_preauth",
+      "did",
+      "directory",
+      "sub_index",
+      "dir_root",
+      "owner",
+      "escrow",
+      "offer",
+      "payment_channel",
+      "ripple_state",
+      "ticket",
+      "nft_page",
+      "bridge_account",
+      "bridge",
+      "xchain_owned_claim_id",
+      "xchain_owned_create_account_claim_id",
+      "delegate"
+    ]
+  },
+  "LedgerRequest": {
+    "file": "ledger.ts",
+    "required": [],
+    "optional": [
+      "full",
+      "accounts",
+      "transactions",
+      "expand",
+      "owner_funds",
+      "binary",
+      "queue",
+      "type"
+    ]
+  },
+  "LookupByLedgerRequest": {
+    "file": "baseMethod.ts",
+    "required": [],
+    "optional": [
+      "ledger_hash",
+      "ledger_index"
+    ]
+  },
+  "ManifestRequest": {
+    "file": "manifest.ts",
+    "required": [
+      "public_key"
+    ],
+    "optional": []
+  },
+  "NFTBuyOffersRequest": {
+    "file": "nftBuyOffers.ts",
+    "required": [
+      "nft_id"
+    ],
+    "optional": [
+      "limit",
+      "marker"
+    ]
+  },
+  "NFTHistoryRequest": {
+    "file": "nftHistory.ts",
+    "required": [
+      "nft_id"
+    ],
+    "optional": [
+      "ledger_index_min",
+      "ledger_index_max",
+      "binary",
+      "forward",
+      "limit",
+      "marker"
+    ]
+  },
+  "NFTInfoRequest": {
+    "file": "nftInfo.ts",
+    "required": [
+      "nft_id"
+    ],
+    "optional": []
+  },
+  "NFTSellOffersRequest": {
+    "file": "nftSellOffers.ts",
+    "required": [
+      "nft_id"
+    ],
+    "optional": [
+      "limit",
+      "marker"
+    ]
+  },
+  "NFTsByIssuerRequest": {
+    "file": "nftsByIssuer.ts",
+    "required": [
+      "issuer"
+    ],
+    "optional": [
+      "marker",
+      "nft_taxon",
+      "limit"
+    ]
+  },
+  "NoRippleCheckRequest": {
+    "file": "norippleCheck.ts",
+    "required": [
+      "account",
+      "role"
+    ],
+    "optional": [
+      "transactions",
+      "limit",
+      "ledger_hash",
+      "ledger_index"
+    ]
+  },
+  "PathFindCloseRequest": {
+    "file": "pathFind.ts",
+    "required": [
+      "subcommand"
+    ],
+    "optional": []
+  },
+  "PathFindCreateRequest": {
+    "file": "pathFind.ts",
+    "required": [
+      "subcommand",
+      "source_account",
+      "destination_account",
+      "destination_amount"
+    ],
+    "optional": [
+      "send_max",
+      "paths",
+      "domain"
+    ]
+  },
+  "PathFindStatusRequest": {
+    "file": "pathFind.ts",
+    "required": [
+      "subcommand"
+    ],
+    "optional": []
+  },
+  "PingRequest": {
+    "file": "ping.ts",
+    "required": [],
+    "optional": []
+  },
+  "RandomRequest": {
+    "file": "random.ts",
+    "required": [],
+    "optional": []
+  },
+  "RipplePathFindRequest": {
+    "file": "ripplePathFind.ts",
+    "required": [
+      "source_account",
+      "destination_account",
+      "destination_amount"
+    ],
+    "optional": [
+      "send_max",
+      "source_currencies",
+      "domain"
+    ]
+  },
+  "ServerDefinitionsRequest": {
+    "file": "serverDefinitions.ts",
+    "required": [],
+    "optional": [
+      "hash"
+    ]
+  },
+  "ServerInfoRequest": {
+    "file": "serverInfo.ts",
+    "required": [],
+    "optional": []
+  },
+  "ServerStateRequest": {
+    "file": "serverState.ts",
+    "required": [],
+    "optional": []
+  },
+  "SubmitMultisignedRequest": {
+    "file": "submitMultisigned.ts",
+    "required": [
+      "tx_json"
+    ],
+    "optional": [
+      "fail_hard"
+    ]
+  },
+  "SubmitRequest": {
+    "file": "submit.ts",
+    "required": [
+      "tx_blob"
+    ],
+    "optional": [
+      "fail_hard"
+    ]
+  },
+  "SubscribeRequest": {
+    "file": "subscribe.ts",
+    "required": [],
+    "optional": [
+      "streams",
+      "accounts",
+      "accounts_proposed",
+      "books",
+      "url",
+      "url_username",
+      "url_password"
+    ]
+  },
+  "TransactionEntryRequest": {
+    "file": "transactionEntry.ts",
+    "required": [
+      "tx_hash"
+    ],
+    "optional": []
+  },
+  "TxRequest": {
+    "file": "tx.ts",
+    "required": [],
+    "optional": [
+      "transaction",
+      "ctid",
+      "binary",
+      "min_ledger",
+      "max_ledger"
+    ]
+  },
+  "UnsubscribeRequest": {
+    "file": "unsubscribe.ts",
+    "required": [],
+    "optional": [
+      "streams",
+      "accounts",
+      "accounts_proposed",
+      "books"
+    ]
+  },
+  "VaultInfoRequest": {
+    "file": "vaultInfo.ts",
+    "required": [],
+    "optional": [
+      "vault_id",
+      "owner",
+      "seq"
+    ]
+  }
+}
