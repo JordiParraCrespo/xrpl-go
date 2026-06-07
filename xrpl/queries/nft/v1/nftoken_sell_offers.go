@@ -30,8 +30,10 @@ func (*NFTokenSellOffersRequest) APIVersion() int {
 }
 
 // Validate checks that the NFTokenSellOffersRequest is correctly formed.
-// TODO implement V2
-func (*NFTokenSellOffersRequest) Validate() error {
+func (r *NFTokenSellOffersRequest) Validate() error {
+	if r.NFTokenID == "" {
+		return ErrNoNFTokenID
+	}
 	return nil
 }
 

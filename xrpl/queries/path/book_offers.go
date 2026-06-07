@@ -35,8 +35,13 @@ func (*BookOffersRequest) APIVersion() int {
 }
 
 // Validate checks that the BookOffersRequest is correctly formed.
-// TODO implement V2
-func (*BookOffersRequest) Validate() error {
+func (r *BookOffersRequest) Validate() error {
+	if r.TakerGets == (pathtypes.BookOfferCurrency{}) {
+		return ErrNoTakerGets
+	}
+	if r.TakerPays == (pathtypes.BookOfferCurrency{}) {
+		return ErrNoTakerPays
+	}
 	return nil
 }
 

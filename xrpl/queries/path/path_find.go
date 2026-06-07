@@ -47,8 +47,22 @@ func (*FindCreateRequest) APIVersion() int {
 }
 
 // Validate checks that FindCreateRequest is correctly formed.
-// TODO implement V2
-func (*FindCreateRequest) Validate() error {
+func (r *FindCreateRequest) Validate() error {
+	if r.Subcommand == "" {
+		return ErrNoSubcommand
+	}
+	if r.Subcommand != Create {
+		return ErrInvalidSubcommand
+	}
+	if r.SourceAccount == "" {
+		return ErrNoSourceAccount
+	}
+	if r.DestinationAccount == "" {
+		return ErrNoDestinationAccount
+	}
+	if r.DestinationAmount == nil {
+		return ErrNoDestinationAmount
+	}
 	return nil
 }
 
@@ -73,8 +87,13 @@ func (*FindCloseRequest) APIVersion() int {
 }
 
 // Validate checks that FindCloseRequest is correctly formed.
-// TODO implement V2
-func (*FindCloseRequest) Validate() error {
+func (r *FindCloseRequest) Validate() error {
+	if r.Subcommand == "" {
+		return ErrNoSubcommand
+	}
+	if r.Subcommand != Close {
+		return ErrInvalidSubcommand
+	}
 	return nil
 }
 
@@ -99,8 +118,13 @@ func (*FindStatusRequest) APIVersion() int {
 }
 
 // Validate checks that FindStatusRequest is correctly formed.
-// TODO implement V2
-func (*FindStatusRequest) Validate() error {
+func (r *FindStatusRequest) Validate() error {
+	if r.Subcommand == "" {
+		return ErrNoSubcommand
+	}
+	if r.Subcommand != Status {
+		return ErrInvalidSubcommand
+	}
 	return nil
 }
 

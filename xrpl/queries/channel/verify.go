@@ -31,8 +31,19 @@ func (*VerifyRequest) APIVersion() int {
 }
 
 // Validate ensures the VerifyRequest is valid.
-// TODO implement v2
-func (*VerifyRequest) Validate() error {
+func (r *VerifyRequest) Validate() error {
+	if r.Amount == 0 {
+		return ErrNoAmount
+	}
+	if r.ChannelID == "" {
+		return ErrNoChannelID
+	}
+	if r.PublicKey == "" {
+		return ErrNoPublicKey
+	}
+	if r.Signature == "" {
+		return ErrNoSignature
+	}
 	return nil
 }
 
