@@ -36,8 +36,10 @@ func (*ManifestRequest) APIVersion() int {
 }
 
 // Validate verifies the ManifestRequest parameters.
-// TODO: implement V2.
-func (*ManifestRequest) Validate() error {
+func (r *ManifestRequest) Validate() error {
+	if r.PublicKey == "" {
+		return ErrNoPublicKey
+	}
 	return nil
 }
 
