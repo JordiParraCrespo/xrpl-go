@@ -32,8 +32,10 @@ func (*NFTsByIssuerRequest) APIVersion() int {
 }
 
 // Validate checks the NFTsByIssuerRequest for valid parameters.
-// TODO implement V2
-func (*NFTsByIssuerRequest) Validate() error {
+func (r *NFTsByIssuerRequest) Validate() error {
+	if r.Issuer == "" {
+		return ErrNoIssuer
+	}
 	return nil
 }
 
