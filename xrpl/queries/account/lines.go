@@ -33,8 +33,10 @@ func (*LinesRequest) APIVersion() int {
 }
 
 // Validate performs validation on LinesRequest.
-// TODO: implement V2.
-func (*LinesRequest) Validate() error {
+func (r *LinesRequest) Validate() error {
+	if r.Account == "" {
+		return ErrNoAccountID
+	}
 	return nil
 }
 

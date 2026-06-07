@@ -33,8 +33,10 @@ func (*OffersRequest) APIVersion() int {
 }
 
 // Validate checks the OffersRequest for correctness.
-// TODO: Implement (V2)
-func (*OffersRequest) Validate() error {
+func (r *OffersRequest) Validate() error {
+	if r.Account == "" {
+		return ErrNoAccountID
+	}
 	return nil
 }
 

@@ -67,11 +67,21 @@ func TestAccountChannelsResponse(t *testing.T) {
 }
 
 func TestValidate(t *testing.T) {
-	s := ChannelsRequest{
-		Account: "",
-	}
+	t.Run("fail - missing account", func(t *testing.T) {
+		s := ChannelsRequest{
+			Account: "",
+		}
 
-	err := s.Validate()
+		err := s.Validate()
 
-	assert.EqualError(t, err, "no account ID specified")
+		assert.EqualError(t, err, "no account ID specified")
+	})
+
+	t.Run("pass - valid request", func(t *testing.T) {
+		s := ChannelsRequest{
+			Account: "rLHmBn4fT92w4F6ViyYbjoizLTo83tHTHu",
+		}
+
+		assert.NoError(t, s.Validate())
+	})
 }

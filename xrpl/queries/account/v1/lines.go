@@ -34,7 +34,10 @@ func (*LinesRequest) APIVersion() int {
 }
 
 // Validate checks the LinesRequest parameters for validity.
-func (*LinesRequest) Validate() error {
+func (r *LinesRequest) Validate() error {
+	if r.Account == "" {
+		return ErrNoAccountID
+	}
 	return nil
 }
 

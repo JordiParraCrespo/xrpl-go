@@ -32,6 +32,62 @@ func TestNoRippleCheckRequest(t *testing.T) {
 	}
 }
 
+func TestNoRippleCheckRequest_Validate(t *testing.T) {
+	tests := []struct {
+		name    string
+		request NoRippleCheckRequest
+		wantErr error
+	}{
+		{
+			name: "pass - valid request",
+			request: NoRippleCheckRequest{
+				Account: "r9cZA1mLK5R5Am25ArfXF7tRp1PeperEvH",
+				Role:    "gateway",
+			},
+			wantErr: nil,
+		},
+		{
+			name: "pass - valid request with user role",
+			request: NoRippleCheckRequest{
+				Account: "r9cZA1mLK5R5Am25ArfXF7tRp1PeperEvH",
+				Role:    "user",
+			},
+			wantErr: nil,
+		},
+		{
+			name: "fail - missing account",
+			request: NoRippleCheckRequest{
+				Role: "gateway",
+			},
+			wantErr: ErrNoAccountID,
+		},
+		{
+			name: "fail - missing role",
+			request: NoRippleCheckRequest{
+				Account: "r9cZA1mLK5R5Am25ArfXF7tRp1PeperEvH",
+			},
+			wantErr: ErrNoRole,
+		},
+		{
+			name: "fail - invalid role",
+			request: NoRippleCheckRequest{
+				Account: "r9cZA1mLK5R5Am25ArfXF7tRp1PeperEvH",
+				Role:    "issuer",
+			},
+			wantErr: ErrInvalidRole,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := tt.request.Validate()
+			if err != tt.wantErr {
+				t.Errorf("Validate() error = %v, want %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
 func TestNoRippleCheckResponse(t *testing.T) {
 	s := NoRippleCheckResponse{
 		LedgerCurrentIndex: common.LedgerIndex(1234567890),

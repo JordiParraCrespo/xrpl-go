@@ -1,4 +1,4 @@
-package account
+package v1
 
 import "errors"
 

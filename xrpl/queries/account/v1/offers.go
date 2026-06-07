@@ -35,8 +35,10 @@ func (*OffersRequest) APIVersion() int {
 }
 
 // Validate checks that the OffersRequest parameters are valid.
-// TODO: implement V2 validation.
-func (*OffersRequest) Validate() error {
+func (r *OffersRequest) Validate() error {
+	if r.Account == "" {
+		return ErrNoAccountID
+	}
 	return nil
 }
 

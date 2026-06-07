@@ -35,7 +35,10 @@ func (*InfoRequest) APIVersion() int {
 }
 
 // Validate checks the InfoRequest parameters for validity.
-func (*InfoRequest) Validate() error {
+func (r *InfoRequest) Validate() error {
+	if r.Account == "" {
+		return ErrNoAccountID
+	}
 	return nil
 }
 
