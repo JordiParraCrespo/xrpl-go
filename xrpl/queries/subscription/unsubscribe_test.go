@@ -65,7 +65,7 @@ func TestUnsubscribeRequest_Validate(t *testing.T) {
 		wantErr error
 	}{
 		{
-			// UnsubscribeRequest has no required fields in xrpl.js.
+			// UnsubscribeRequest has no required fields.
 			name: "pass - valid request",
 			request: UnsubscribeRequest{
 				Streams:  []string{"ledger", "transactions"},

@@ -27,7 +27,7 @@ func TestRandomRequest_Validate(t *testing.T) {
 		wantErr error
 	}{
 		{
-			// RandomRequest has no required fields in xrpl.js.
+			// RandomRequest has no required fields.
 			name:    "pass - valid request",
 			request: RandomRequest{},
 			wantErr: nil,
