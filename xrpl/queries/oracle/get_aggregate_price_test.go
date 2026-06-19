@@ -38,6 +38,72 @@ func TestGetAggregatePriceRequest(t *testing.T) {
 	}
 }
 
+func TestGetAggregatePriceRequest_Validate(t *testing.T) {
+	tests := []struct {
+		name    string
+		request GetAggregatePriceRequest
+		wantErr error
+	}{
+		{
+			name: "pass - valid request",
+			request: GetAggregatePriceRequest{
+				BaseAsset:  "XRP",
+				QuoteAsset: "USD",
+				Oracles: []types.Oracle{
+					{
+						Account:          "rLHmBn4fT92w4F6ViyYbjoizLTo83tHTHu",
+						OracleDocumentID: "123",
+					},
+				},
+			},
+			wantErr: nil,
+		},
+		{
+			name: "fail - missing base_asset",
+			request: GetAggregatePriceRequest{
+				QuoteAsset: "USD",
+				Oracles: []types.Oracle{
+					{
+						Account:          "rLHmBn4fT92w4F6ViyYbjoizLTo83tHTHu",
+						OracleDocumentID: "123",
+					},
+				},
+			},
+			wantErr: ErrNoBaseAsset,
+		},
+		{
+			name: "fail - missing quote_asset",
+			request: GetAggregatePriceRequest{
+				BaseAsset: "XRP",
+				Oracles: []types.Oracle{
+					{
+						Account:          "rLHmBn4fT92w4F6ViyYbjoizLTo83tHTHu",
+						OracleDocumentID: "123",
+					},
+				},
+			},
+			wantErr: ErrNoQuoteAsset,
+		},
+		{
+			name: "fail - missing oracles",
+			request: GetAggregatePriceRequest{
+				BaseAsset:  "XRP",
+				QuoteAsset: "USD",
+			},
+			wantErr: ErrNoOracles,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := tt.request.Validate()
+			if err != tt.wantErr {
+				t.Errorf("Validate() error = %v, want %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
 func TestGetAggregatePriceResponse(t *testing.T) {
 	s := GetAggregatePriceResponse{
 		EntireSet: types.Set{

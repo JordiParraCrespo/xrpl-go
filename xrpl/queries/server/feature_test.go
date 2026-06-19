@@ -49,6 +49,60 @@ func TestFeatureOneRequest(t *testing.T) {
 	}
 }
 
+func TestFeatureAllRequest_Validate(t *testing.T) {
+	// FeatureAllRequest has no required fields. Only the valid path is exercised.
+	tests := []struct {
+		name    string
+		request FeatureAllRequest
+		wantErr error
+	}{
+		{
+			name:    "pass - valid request",
+			request: FeatureAllRequest{},
+			wantErr: nil,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := tt.request.Validate()
+			if err != tt.wantErr {
+				t.Errorf("Validate() error = %v, want %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
+func TestFeatureOneRequest_Validate(t *testing.T) {
+	tests := []struct {
+		name    string
+		request FeatureOneRequest
+		wantErr error
+	}{
+		{
+			name: "pass - valid request",
+			request: FeatureOneRequest{
+				Feature: "foo",
+			},
+			wantErr: nil,
+		},
+		{
+			name:    "fail - missing feature",
+			request: FeatureOneRequest{},
+			wantErr: ErrNoFeature,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := tt.request.Validate()
+			if err != tt.wantErr {
+				t.Errorf("Validate() error = %v, want %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
 func TestFeatureOneResponse(t *testing.T) {
 	r := FeatureResponse{
 		"feature1": {Enabled: true, Name: "feature1", Supported: true},
