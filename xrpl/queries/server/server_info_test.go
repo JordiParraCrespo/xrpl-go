@@ -135,8 +135,7 @@ func TestServerInfoResponse(t *testing.T) {
 }
 
 func TestServerInfoRequest_Validate(t *testing.T) {
-	// InfoRequest models xrpl.js ServerInfoRequest, which has no required
-	// fields. Only the valid path is exercised.
+	// InfoRequest has no required fields. Only the valid path is exercised.
 	tests := []struct {
 		name    string
 		request InfoRequest

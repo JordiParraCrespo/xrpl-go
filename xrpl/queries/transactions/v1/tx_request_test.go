@@ -4,12 +4,10 @@ import (
 	"testing"
 )
 
-// TxRequest models xrpl.js TxRequest. Per jsspec.json (and the .ts interface),
-// every field is optional: `transaction`, `ctid`, `binary`, `min_ledger`,
-// `max_ledger`. xrpl.js documents in prose that "exactly one of transaction or
-// ctid must be specified", but neither is marked required in the interface, and
-// the Go struct does not even model `ctid`. Per the parity-not-creativity rule
-// we encode no hard-required field, so only the valid path is exercised.
+// TxRequest has no required fields: transaction, ctid, binary, min_ledger and
+// max_ledger are all optional. Exactly one of transaction or ctid is expected
+// in practice, but neither is mandatory and the Go struct does not model ctid,
+// so Validate enforces nothing and only the valid path is exercised.
 func TestTxRequest_Validate(t *testing.T) {
 	tests := []struct {
 		name    string

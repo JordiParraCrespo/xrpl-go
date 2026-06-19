@@ -23,8 +23,7 @@ func (*EntryRequest) Method() string {
 }
 
 // Validate ensures the EntryRequest is valid. The transaction_entry command
-// requires the tx_hash field; all other fields are optional. Mirrors the
-// xrpl.js TransactionEntryRequest model.
+// requires the tx_hash field; all other fields are optional.
 func (r *EntryRequest) Validate() error {
 	if r.TxHash == "" {
 		return ErrNoTxHash

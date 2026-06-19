@@ -54,7 +54,7 @@ func TestFeeResponse(t *testing.T) {
 }
 
 func TestFeeRequest_Validate(t *testing.T) {
-	// FeeRequest models xrpl.js FeeRequest, which has no required fields.
+	// FeeRequest has no required fields.
 	// Only the valid path is exercised.
 	tests := []struct {
 		name    string
