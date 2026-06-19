@@ -25,6 +25,46 @@ func TestDepositAuthorizedRequest(t *testing.T) {
 	}
 }
 
+func TestDepositAuthorizedRequest_Validate(t *testing.T) {
+	tests := []struct {
+		name    string
+		request DepositAuthorizedRequest
+		wantErr error
+	}{
+		{
+			name: "pass - valid request",
+			request: DepositAuthorizedRequest{
+				SourceAccount:      "rEhxGqkqPPSxQ3P25J66ft5TwpzV14k2de",
+				DestinationAccount: "rsUiUMpnrgxQp24dJYZDhmV4bE3aBtQyt8",
+			},
+			wantErr: nil,
+		},
+		{
+			name: "fail - missing source_account",
+			request: DepositAuthorizedRequest{
+				DestinationAccount: "rsUiUMpnrgxQp24dJYZDhmV4bE3aBtQyt8",
+			},
+			wantErr: ErrNoSourceAccount,
+		},
+		{
+			name: "fail - missing destination_account",
+			request: DepositAuthorizedRequest{
+				SourceAccount: "rEhxGqkqPPSxQ3P25J66ft5TwpzV14k2de",
+			},
+			wantErr: ErrNoDestinationAccount,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := tt.request.Validate()
+			if err != tt.wantErr {
+				t.Errorf("Validate() error = %v, want %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
 func TestDepositAuthorizedResponse(t *testing.T) {
 	s := DepositAuthorizedResponse{
 		DepositAuthorized:  true,

@@ -38,6 +38,56 @@ func TestBookOffersRequest(t *testing.T) {
 	}
 }
 
+func TestBookOffersRequest_Validate(t *testing.T) {
+	tests := []struct {
+		name    string
+		request BookOffersRequest
+		wantErr error
+	}{
+		{
+			name: "pass - valid request",
+			request: BookOffersRequest{
+				TakerGets: pathtypes.BookOfferCurrency{
+					Currency: "XRP",
+				},
+				TakerPays: pathtypes.BookOfferCurrency{
+					Currency: "USD",
+					Issuer:   "rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B",
+				},
+			},
+			wantErr: nil,
+		},
+		{
+			name: "fail - missing taker_gets",
+			request: BookOffersRequest{
+				TakerPays: pathtypes.BookOfferCurrency{
+					Currency: "USD",
+					Issuer:   "rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B",
+				},
+			},
+			wantErr: ErrNoTakerGets,
+		},
+		{
+			name: "fail - missing taker_pays",
+			request: BookOffersRequest{
+				TakerGets: pathtypes.BookOfferCurrency{
+					Currency: "XRP",
+				},
+			},
+			wantErr: ErrNoTakerPays,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := tt.request.Validate()
+			if err != tt.wantErr {
+				t.Errorf("Validate() error = %v, want %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
 func TestBookOffersResponse(t *testing.T) {
 	s := BookOffersResponse{
 		LedgerCurrentIndex: 7035305,

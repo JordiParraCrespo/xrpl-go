@@ -50,6 +50,69 @@ func TestRipplePathFindRequest(t *testing.T) {
 	}
 }
 
+func TestRipplePathFindRequest_Validate(t *testing.T) {
+	tests := []struct {
+		name    string
+		request RipplePathFindRequest
+		wantErr error
+	}{
+		{
+			name: "pass - valid request",
+			request: RipplePathFindRequest{
+				SourceAccount:      "r9cZA1mLK5R5Am25ArfXFmqgNwjZgnfk59",
+				DestinationAccount: "r9cZA1mLK5R5Am25ArfXFmqgNwjZgnfk59",
+				DestinationAmount: types.IssuedCurrencyAmount{
+					Issuer:   "rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B",
+					Currency: "USD",
+					Value:    "0.001",
+				},
+			},
+			wantErr: nil,
+		},
+		{
+			name: "fail - missing source_account",
+			request: RipplePathFindRequest{
+				DestinationAccount: "r9cZA1mLK5R5Am25ArfXFmqgNwjZgnfk59",
+				DestinationAmount: types.IssuedCurrencyAmount{
+					Issuer:   "rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B",
+					Currency: "USD",
+					Value:    "0.001",
+				},
+			},
+			wantErr: ErrNoSourceAccount,
+		},
+		{
+			name: "fail - missing destination_account",
+			request: RipplePathFindRequest{
+				SourceAccount: "r9cZA1mLK5R5Am25ArfXFmqgNwjZgnfk59",
+				DestinationAmount: types.IssuedCurrencyAmount{
+					Issuer:   "rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B",
+					Currency: "USD",
+					Value:    "0.001",
+				},
+			},
+			wantErr: ErrNoDestinationAccount,
+		},
+		{
+			name: "fail - missing destination_amount",
+			request: RipplePathFindRequest{
+				SourceAccount:      "r9cZA1mLK5R5Am25ArfXFmqgNwjZgnfk59",
+				DestinationAccount: "r9cZA1mLK5R5Am25ArfXFmqgNwjZgnfk59",
+			},
+			wantErr: ErrNoDestinationAmount,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := tt.request.Validate()
+			if err != tt.wantErr {
+				t.Errorf("Validate() error = %v, want %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
 func TestRipplePathFindResponse(t *testing.T) {
 	s := RipplePathFindResponse{
 		Alternatives: []pathtypes.RippleAlternative{

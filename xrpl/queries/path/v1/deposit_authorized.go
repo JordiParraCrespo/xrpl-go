@@ -31,8 +31,13 @@ func (*DepositAuthorizedRequest) APIVersion() int {
 }
 
 // Validate verifies the DepositAuthorizedRequest parameters.
-// TODO: implement V2.
-func (*DepositAuthorizedRequest) Validate() error {
+func (r *DepositAuthorizedRequest) Validate() error {
+	if r.SourceAccount == "" {
+		return ErrNoSourceAccount
+	}
+	if r.DestinationAccount == "" {
+		return ErrNoDestinationAccount
+	}
 	return nil
 }
 

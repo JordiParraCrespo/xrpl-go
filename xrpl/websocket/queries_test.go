@@ -1162,7 +1162,7 @@ func TestClient_GetChannelVerify(t *testing.T) {
 			cl, cleanup := setupTestClient(t, tt.serverMessages)
 			defer cleanup()
 
-			result, err := cl.GetChannelVerify(&channel.VerifyRequest{})
+			result, err := cl.GetChannelVerify(&channel.VerifyRequest{Amount: 1000, ChannelID: "5DB01B7FFED6B67E6B0414DED11E051D2EE2B7619CE0EAA6286D67A3A4D5BDB3", PublicKey: "aB44YfzW24VDEJQ2UuLPV2PvqcPCSoLnL7y5M1EzhdW4LnK5xMS3", Signature: "3045022100AB"})
 
 			if tt.expectedErr != nil {
 				if err == nil || err.Error() != tt.expectedErr.Error() {
@@ -1555,7 +1555,7 @@ func TestClient_GetNFTBuyOffers(t *testing.T) {
 			cl, cleanup := setupTestClient(t, tt.serverMessages)
 			defer cleanup()
 
-			result, err := cl.GetNFTBuyOffers(&nft.NFTokenBuyOffersRequest{})
+			result, err := cl.GetNFTBuyOffers(&nft.NFTokenBuyOffersRequest{NFTokenID: "00080000B4F4AFC5FBCBD76873F18006173D2193467CC461071E1E4B00000007"})
 
 			if tt.expectedErr != nil {
 				if err == nil || err.Error() != tt.expectedErr.Error() {
@@ -1640,7 +1640,7 @@ func TestClient_GetNFTSellOffers(t *testing.T) {
 			cl, cleanup := setupTestClient(t, tt.serverMessages)
 			defer cleanup()
 
-			result, err := cl.GetNFTSellOffers(&nft.NFTokenSellOffersRequest{})
+			result, err := cl.GetNFTSellOffers(&nft.NFTokenSellOffersRequest{NFTokenID: "00080000B4F4AFC5FBCBD76873F18006173D2193467CC461071E1E4B00000007"})
 
 			if tt.expectedErr != nil {
 				if err == nil || err.Error() != tt.expectedErr.Error() {
@@ -1731,7 +1731,7 @@ func TestClient_GetBookOffers(t *testing.T) {
 			cl, cleanup := setupTestClient(t, tt.serverMessages)
 			defer cleanup()
 
-			result, err := cl.GetBookOffers(&path.BookOffersRequest{})
+			result, err := cl.GetBookOffers(&path.BookOffersRequest{TakerGets: pathtypes.BookOfferCurrency{Currency: "XRP"}, TakerPays: pathtypes.BookOfferCurrency{Currency: "USD", Issuer: "rhub8VRN55s94qWKDv6jmDy1pUykJzF3wq"}})
 
 			if tt.expectedErr != nil {
 				if err == nil || err.Error() != tt.expectedErr.Error() {
@@ -1808,7 +1808,7 @@ func TestClient_GetDepositAuthorized(t *testing.T) {
 			cl, cleanup := setupTestClient(t, tt.serverMessages)
 			defer cleanup()
 
-			result, err := cl.GetDepositAuthorized(&path.DepositAuthorizedRequest{})
+			result, err := cl.GetDepositAuthorized(&path.DepositAuthorizedRequest{SourceAccount: "rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn", DestinationAccount: "rN7n7otQDd6FczFgLdSqtcsAUxDkw6fzRH"})
 
 			if tt.expectedErr != nil {
 				if err == nil || err.Error() != tt.expectedErr.Error() {
@@ -1900,7 +1900,7 @@ func TestClient_FindPathCreate(t *testing.T) {
 			cl, cleanup := setupTestClient(t, tt.serverMessages)
 			defer cleanup()
 
-			result, err := cl.FindPathCreate(&path.FindCreateRequest{})
+			result, err := cl.FindPathCreate(&path.FindCreateRequest{Subcommand: path.Create, SourceAccount: "rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn", DestinationAccount: "rN7n7otQDd6FczFgLdSqtcsAUxDkw6fzRH", DestinationAmount: types.XRPCurrencyAmount(100)})
 
 			if tt.expectedErr != nil {
 				if err == nil || err.Error() != tt.expectedErr.Error() {
@@ -1981,7 +1981,7 @@ func TestClient_FindPathClose(t *testing.T) {
 			cl, cleanup := setupTestClient(t, tt.serverMessages)
 			defer cleanup()
 
-			result, err := cl.FindPathClose(&path.FindCloseRequest{})
+			result, err := cl.FindPathClose(&path.FindCloseRequest{Subcommand: path.Close})
 
 			if tt.expectedErr != nil {
 				if err == nil || err.Error() != tt.expectedErr.Error() {
@@ -2066,7 +2066,7 @@ func TestClient_FindPathStatus(t *testing.T) {
 			cl, cleanup := setupTestClient(t, tt.serverMessages)
 			defer cleanup()
 
-			result, err := cl.FindPathStatus(&path.FindStatusRequest{})
+			result, err := cl.FindPathStatus(&path.FindStatusRequest{Subcommand: path.Status})
 
 			if tt.expectedErr != nil {
 				if err == nil || err.Error() != tt.expectedErr.Error() {
@@ -2143,7 +2143,7 @@ func TestClient_GetRipplePathFind(t *testing.T) {
 			cl, cleanup := setupTestClient(t, tt.serverMessages)
 			defer cleanup()
 
-			result, err := cl.GetRipplePathFind(&path.RipplePathFindRequest{})
+			result, err := cl.GetRipplePathFind(&path.RipplePathFindRequest{SourceAccount: "rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn", DestinationAccount: "rN7n7otQDd6FczFgLdSqtcsAUxDkw6fzRH", DestinationAmount: types.XRPCurrencyAmount(100)})
 
 			if tt.expectedErr != nil {
 				if err == nil || err.Error() != tt.expectedErr.Error() {
