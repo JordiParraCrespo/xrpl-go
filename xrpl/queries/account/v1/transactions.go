@@ -45,8 +45,10 @@ func (*TransactionsRequest) APIVersion() int {
 }
 
 // Validate checks the TransactionsRequest for valid parameters.
-// TODO implement v2
-func (*TransactionsRequest) Validate() error {
+func (r *TransactionsRequest) Validate() error {
+	if r.Account == "" {
+		return ErrNoAccountID
+	}
 	return nil
 }
 

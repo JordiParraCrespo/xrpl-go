@@ -27,6 +27,37 @@ func TestAccountNFTsRequest(t *testing.T) {
 	}
 }
 
+func TestNFTsRequest_Validate(t *testing.T) {
+	tests := []struct {
+		name    string
+		request NFTsRequest
+		wantErr error
+	}{
+		{
+			name: "pass - valid request",
+			request: NFTsRequest{
+				Account:     "rLHmBn4fT92w4F6ViyYbjoizLTo83tHTHu",
+				LedgerIndex: common.Validated,
+			},
+			wantErr: nil,
+		},
+		{
+			name:    "fail - missing account",
+			request: NFTsRequest{},
+			wantErr: ErrNoAccountID,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := tt.request.Validate()
+			if err != tt.wantErr {
+				t.Errorf("Validate() error = %v, want %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
 func TestAccountNFTsResponse(t *testing.T) {
 	s := NFTsResponse{
 		Account: "rLHmBn4fT92w4F6ViyYbjoizLTo83tHTHu",

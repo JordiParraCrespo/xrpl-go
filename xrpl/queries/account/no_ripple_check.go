@@ -33,7 +33,16 @@ func (*NoRippleCheckRequest) APIVersion() int {
 }
 
 // Validate performs validation on NoRippleCheckRequest.
-func (*NoRippleCheckRequest) Validate() error {
+func (r *NoRippleCheckRequest) Validate() error {
+	if r.Account == "" {
+		return ErrNoAccountID
+	}
+	if r.Role == "" {
+		return ErrNoRole
+	}
+	if r.Role != "gateway" && r.Role != "user" {
+		return ErrInvalidRole
+	}
 	return nil
 }
 

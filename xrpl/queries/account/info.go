@@ -33,9 +33,13 @@ func (*InfoRequest) APIVersion() int {
 	return version.RippledAPIV2
 }
 
-// Validate performs validation on InfoRequest.
-// TODO: implement V2.
-func (*InfoRequest) Validate() error {
+// Validate performs validation on InfoRequest. The account_info command
+// requires the account field; all other fields are optional.
+func (r *InfoRequest) Validate() error {
+	if r.Account == "" {
+		return ErrNoAccountID
+	}
+
 	return nil
 }
 
