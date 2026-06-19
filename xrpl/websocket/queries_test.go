@@ -17,6 +17,7 @@ import (
 	"github.com/Peersyst/xrpl-go/xrpl/queries/nft"
 	nfttypes "github.com/Peersyst/xrpl-go/xrpl/queries/nft/types"
 	"github.com/Peersyst/xrpl-go/xrpl/queries/oracle"
+	oracletypes "github.com/Peersyst/xrpl-go/xrpl/queries/oracle/types"
 	"github.com/Peersyst/xrpl-go/xrpl/queries/path"
 	pathtypes "github.com/Peersyst/xrpl-go/xrpl/queries/path/types"
 	"github.com/Peersyst/xrpl-go/xrpl/queries/server"
@@ -2461,7 +2462,7 @@ func TestClient_GetManifest(t *testing.T) {
 			cl, cleanup := setupTestClient(t, tt.serverMessages)
 			defer cleanup()
 
-			result, err := cl.GetManifest(&server.ManifestRequest{})
+			result, err := cl.GetManifest(&server.ManifestRequest{PublicKey: "nHUFE9prPXPrHcG3SkwP1UzAQbSphqyQkQK9ATXLZsfkezhhda3p"})
 
 			if tt.expectedErr != nil {
 				if err == nil || err.Error() != tt.expectedErr.Error() {
@@ -2618,7 +2619,7 @@ func TestClient_GetAggregatePrice(t *testing.T) {
 			cl, cleanup := setupTestClient(t, tt.serverMessages)
 			defer cleanup()
 
-			result, err := cl.GetAggregatePrice(&oracle.GetAggregatePriceRequest{})
+			result, err := cl.GetAggregatePrice(&oracle.GetAggregatePriceRequest{BaseAsset: "XRP", QuoteAsset: "USD", Oracles: []oracletypes.Oracle{{Account: "rsA2LpzuawewSBQXkiju3YQTMzW13pAAdW", OracleDocumentID: uint32(1)}}})
 
 			if tt.expectedErr != nil {
 				if err == nil || err.Error() != tt.expectedErr.Error() {
