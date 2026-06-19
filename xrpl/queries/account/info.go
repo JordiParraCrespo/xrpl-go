@@ -34,8 +34,7 @@ func (*InfoRequest) APIVersion() int {
 }
 
 // Validate performs validation on InfoRequest. The account_info command
-// requires the account field; all other fields are optional. Mirrors the
-// xrpl.js AccountInfoRequest model and rippled's doAccountInfo handler.
+// requires the account field; all other fields are optional.
 func (r *InfoRequest) Validate() error {
 	if r.Account == "" {
 		return ErrNoAccountID
