@@ -57,3 +57,30 @@ func TestUnsubscribeRequest(t *testing.T) {
 		t.Error(err)
 	}
 }
+
+func TestUnsubscribeRequest_Validate(t *testing.T) {
+	tests := []struct {
+		name    string
+		request UnsubscribeRequest
+		wantErr error
+	}{
+		{
+			// UnsubscribeRequest has no required fields.
+			name: "pass - valid request",
+			request: UnsubscribeRequest{
+				Streams:  []string{"ledger", "transactions"},
+				Accounts: []types.Address{"rrpNnNLKrartuEqfJGpqyDwPj1AFPg9vn1"},
+			},
+			wantErr: nil,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := tt.request.Validate()
+			if err != tt.wantErr {
+				t.Errorf("Validate() error = %v, want %v", err, tt.wantErr)
+			}
+		})
+	}
+}

@@ -57,6 +57,33 @@ func TestSubscribeRequest(t *testing.T) {
 	}
 }
 
+func TestSubscribeRequest_Validate(t *testing.T) {
+	tests := []struct {
+		name    string
+		request Request
+		wantErr error
+	}{
+		{
+			// SubscribeRequest has no required fields.
+			name: "pass - valid request",
+			request: Request{
+				Streams:  []string{"ledger", "transactions"},
+				Accounts: []types.Address{"rG1QQv2nh2gr7RCZ1P8YYcBUKCCN633jCn"},
+			},
+			wantErr: nil,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := tt.request.Validate()
+			if err != tt.wantErr {
+				t.Errorf("Validate() error = %v, want %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
 func TestSubscribeResponse(t *testing.T) {
 	s := Response{
 		LoadBase:         10,
