@@ -23,6 +23,32 @@ func TestLedgerRequest(t *testing.T) {
 	}
 }
 
+// LedgerRequest has no required fields.
+func TestLedgerRequest_Validate(t *testing.T) {
+	tests := []struct {
+		name    string
+		request Request
+		wantErr error
+	}{
+		{
+			name: "pass - valid request",
+			request: Request{
+				LedgerIndex: common.Validated,
+			},
+			wantErr: nil,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := tt.request.Validate()
+			if err != tt.wantErr {
+				t.Errorf("Validate() error = %v, want %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
 func TestLedgerResponse(t *testing.T) {
 	s := Response{
 		Ledger: ledgertypesv1.BaseLedger{
