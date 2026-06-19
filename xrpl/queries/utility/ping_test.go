@@ -11,7 +11,7 @@ func TestPingRequest_Validate(t *testing.T) {
 		wantErr error
 	}{
 		{
-			// PingRequest has no required fields in xrpl.js.
+			// PingRequest has no required fields.
 			name:    "pass - valid request",
 			request: PingRequest{},
 			wantErr: nil,

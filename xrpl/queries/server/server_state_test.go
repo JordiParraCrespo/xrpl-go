@@ -138,8 +138,7 @@ func TestServerStateResponse(t *testing.T) {
 }
 
 func TestServerStateRequest_Validate(t *testing.T) {
-	// StateRequest models xrpl.js ServerStateRequest, which has no required
-	// fields. Only the valid path is exercised.
+	// StateRequest has no required fields. Only the valid path is exercised.
 	tests := []struct {
 		name    string
 		request StateRequest

@@ -50,8 +50,7 @@ func TestFeatureOneRequest(t *testing.T) {
 }
 
 func TestFeatureAllRequest_Validate(t *testing.T) {
-	// FeatureAllRequest models xrpl.js FeatureAllRequest, which has no required
-	// fields (feature is `feature?: never`). Only the valid path is exercised.
+	// FeatureAllRequest has no required fields. Only the valid path is exercised.
 	tests := []struct {
 		name    string
 		request FeatureAllRequest

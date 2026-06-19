@@ -64,7 +64,7 @@ func TestSubscribeRequest_Validate(t *testing.T) {
 		wantErr error
 	}{
 		{
-			// SubscribeRequest has no required fields in xrpl.js; an empty
+			// SubscribeRequest has no required fields; an empty
 			// request (and a populated one) are both valid.
 			name: "pass - valid request",
 			request: Request{
