@@ -1,0 +1,145 @@
+# Path-matched review rules for the "rules" lens (Open Code Review style).
+# A rule reaches a reviewer only when one of the bundle's changed files
+# matches `paths` and not `exclude`. Keep each rule narrow, checkable from the
+# code, and specific to xrpl-go; general Go pitfalls live in
+# .agents/skills/go-*/rules and lint lives in .golangci.yml.
+#
+# Fields: id, title, severity (blocker|concern|nit), paths, exclude, text.
+
+rules:
+  - id: TX-VALIDATE
+    title: Validate checks every field it can check client-side
+    severity: concern
+    paths: ["xrpl/transaction/*.go"]
+    exclude: ["**/*_test.go", "xrpl/transaction/validations_*.go", "xrpl/transaction/errors.go"]
+    text: |
+      A transaction's `Validate() (bool, error)` calls `BaseTx.Validate()` first
+      (account-submitted transactions only; pseudo-transactions differ), then
+      checks each field the change adds or modifies with the project helper
+      for its kind: `IsAmount` for amounts, `addresscodec.IsValidAddress` for
+      accounts, `IsHex256` / `IsLedgerEntryID` for 256-bit hashes and IDs,
+      `typecheck.IsXRPLNumber` for XRPL numbers, `IsDomainID` for domains,
+      `IsAsset`, `IsPaths`, `IsMemo`, `IsSigner`, or the type's own `IsValid()`.
+      Flag a new or changed field that no code path rejects when malformed.
+      Skip fields whose Go type admits every valid value (e.g. `*uint32` tags).
+      Validation may be indirect, e.g. `ValidateOptionalField(flat, "Name", check)`.
+      Failures return `false, ErrXxx` using a sentinel, success returns `true, nil`.
+
+  - id: TX-FLATTEN
+    title: Flatten emits exact wire names and omits absent optionals
+    severity: concern
+    paths: ["xrpl/transaction/*.go"]
+    exclude: ["**/*_test.go"]
+    text: |
+      `Flatten()` starts from `BaseTx.Flatten()` (which already sets
+      TransactionType) and adds each field under its exact rippled field name.
+      Optional fields are emitted only when present; distinguish absent, zero,
+      empty and nil (a non-nil pointer to zero must be emitted). Amounts go
+      through their own `Flatten()`. A field added to the struct but not to
+      `Flatten()` is silently dropped from the signed transaction.
+
+  - id: TX-FLAGS
+    title: Flags are named, typed constants tested with IsFlagEnabled
+    severity: nit
+    paths: ["xrpl/transaction/**/*.go", "xrpl/ledger-entry-types/**/*.go"]
+    exclude: ["**/*_test.go"]
+    text: |
+      Transaction flags are unexported `uint32` constants prefixed `tf`
+      (ledger flags `lsf`, account-set flags `asf`) with a doc comment, set
+      through one `SetXxxFlag()` method each (`x.Flags |= tfXxx`) and tested
+      with `types.IsFlagEnabled`. Flag raw numeric literals such as
+      `Flags & 131072` in new code.
+
+  - id: ERR-SENTINELS
+    title: Errors are package sentinels in errors.go
+    severity: nit
+    paths: ["**/*.go"]
+    exclude: ["**/*_test.go", "examples/**", "**/testutil/**"]
+    text: |
+      Library errors are package-level `ErrXxx = errors.New("lowercase message")`
+      declared in the package's `errors.go`, grouped under topic comments.
+      Parameterised errors are `ErrXxx` struct types there. New code must not
+      return inline `errors.New(...)` / `fmt.Errorf(...)` literals that callers
+      cannot match with `errors.Is`; wrapping a sentinel with `%w` is fine.
+      Flag a new sentinel that duplicates an existing one's meaning in the same
+      package or in `xrpl/common`.
+
+  - id: TEST-VALIDATE-CASES
+    title: Every new error path has a test case
+    severity: concern
+    paths: ["xrpl/transaction/*.go", "xrpl/queries/**/*.go"]
+    exclude: ["**/*_test.go"]
+    text: |
+      For each sentinel a changed `Validate` or constructor can newly return,
+      some test case must exercise the condition that returns it. Tests are
+      table-driven with `pass - ` / `fail - ` subtest names and assert the
+      sentinel with `require.ErrorIs` (not by message). Read all test files of
+      the package before reporting; one test file may cover several types.
+      A case that exercises the condition without naming the error counts as
+      covered, but report the imprecise assertion as a nit.
+
+  - id: CODEC-ROUNDTRIP
+    title: Codec changes carry an independent binary fixture
+    severity: concern
+    paths: ["binary-codec/**/*.go", "address-codec/**/*.go"]
+    exclude: ["**/*_test.go"]
+    text: |
+      A change to encoding or decoding needs a test against an independently
+      produced expected encoding (a fixture from rippled or xrpl.js), not only a
+      round trip, because matching encoder and decoder bugs cancel out. New
+      serialized types need `FromJSON`, `ToJSON` and registration in
+      `GetSerializedType`. Encoded bytes must never depend on Go map iteration order.
+
+  - id: SIGN-IMMUTABLE
+    title: Signing never mutates caller data or leaks secrets
+    severity: blocker
+    paths: ["xrpl/wallet/**/*.go", "keypairs/**/*.go", "pkg/crypto/**/*.go", "binary-codec/codec.go"]
+    exclude: ["**/*_test.go"]
+    text: |
+      `Wallet.Sign` and `Wallet.Multisign` must not mutate the caller's map or
+      its nested values (map and slice copies are shallow). Signing prefixes for
+      single, multi, payment-channel and Batch signing stay distinct. Seeds,
+      private keys, mnemonics and auth headers never appear in errors or logs.
+      Randomness for keys uses `pkg/random`/crypto-secure sources only.
+
+  - id: CLIENT-PARITY
+    title: RPC and WebSocket clients stay in step
+    severity: concern
+    paths: ["xrpl/rpc/**/*.go", "xrpl/websocket/**/*.go", "xrpl/internal/client/**/*.go"]
+    exclude: ["**/*_test.go"]
+    text: |
+      A behaviour added or changed in one client (a query method, autofill,
+      submit/wait logic, an error) must exist in the other or live in the shared
+      `xrpl/internal/client`. Waits and retries stay bounded and cancellable;
+      a submit response is not final validation. Flag named constants replaced
+      by literals (timeouts, retry counts, HTTP status codes).
+
+  - id: QUERY-SHAPE
+    title: Query requests follow the request contract
+    severity: nit
+    paths: ["xrpl/queries/**/*.go"]
+    exclude: ["**/*_test.go"]
+    text: |
+      Requests embed `common.BaseRequest`, use snake_case JSON tags matching
+      rippled, implement `Method()`, `APIVersion()` and `Validate() error`.
+      Response types tolerate extra fields and do not impose request
+      validation on server data. API-version differences are kept explicit.
+
+  - id: LAYERING
+    title: Low-level packages do not import xrpl/
+    severity: blocker
+    paths: ["address-codec/**/*.go", "keypairs/**/*.go", "binary-codec/**/*.go", "pkg/**/*.go"]
+    text: |
+      The low-level layers (`address-codec`, `keypairs`, `binary-codec`, `pkg`)
+      must not import anything under `xrpl/`, and nothing in the root module
+      imports `github.com/Peersyst/xrpl-go/confidential`. Flag any new import
+      that crosses these boundaries.
+
+  - id: EXAMPLES-RUN
+    title: Examples stay self-contained and runnable
+    severity: nit
+    paths: ["examples/**/*.go"]
+    text: |
+      Each example is self-contained in its directory, uses public APIs only,
+      checks every error it can get, and does not embed real secrets (faucet
+      or documented test seeds only).
