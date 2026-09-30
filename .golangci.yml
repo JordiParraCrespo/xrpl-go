@@ -3,6 +3,8 @@ version: "2"
 linters:
   enable:
     - bodyclose
+    - depguard
+    - err113
     - errcheck
     - errorlint
     - exhaustive
@@ -19,6 +21,27 @@ linters:
     - testifylint
     - unparam
     - unused
+  settings:
+    depguard:
+      rules:
+        # The codec, keypair and utility layers sit below xrpl/.
+        low-level:
+          files:
+            - "**/address-codec/**"
+            - "**/binary-codec/**"
+            - "**/keypairs/**"
+            - "**/pkg/**"
+          deny:
+            - pkg: github.com/Peersyst/xrpl-go/xrpl
+              desc: low-level packages must not import xrpl/
+        # confidential is an optional module that depends on core, never the reverse.
+        core:
+          files:
+            - $all
+            - "!**/confidential/**"
+          deny:
+            - pkg: github.com/Peersyst/xrpl-go/confidential
+              desc: the core module must not import the optional confidential module
   exclusions:
     rules:
       - linters:
@@ -28,11 +51,21 @@ linters:
         linters:
           - revive
         text: "package-comments"
+      # Sentinel errors are for library callers. Examples and test helpers may create errors inline.
+      - path: (examples|testutil)/
+        linters:
+          - err113
+      # The optional confidential module still creates errors inline. Remove once it uses sentinels.
+      - path: confidential/
+        linters:
+          - err113
       # Only testifylint and modernize run on test files.
       # All other linters are excluded from tests to reduce noise.
       - path: _test\.go
         linters:
           - bodyclose
+          - depguard
+          - err113
           - errcheck
           - errorlint
           - exhaustive
