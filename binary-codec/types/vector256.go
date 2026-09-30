@@ -80,7 +80,7 @@ func (v *Vector256) ToJSON(p interfaces.BinaryParser, opts ...int) (any, error) 
 		return nil, err
 	}
 	if len(b)%HashLengthBytes != 0 {
-		return nil, fmt.Errorf("invalid Vector256 byte length %d: must be a multiple of %d", len(b), HashLengthBytes)
+		return nil, fmt.Errorf("%w %d: must be a multiple of %d", ErrInvalidVector256Length, len(b), HashLengthBytes)
 	}
 	var value []string
 

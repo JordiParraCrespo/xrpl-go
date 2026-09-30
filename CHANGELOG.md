@@ -8,6 +8,54 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+Errors that were created inline now have sentinels, so callers can match them with `errors.Is`. Unless noted under Changed, the error text is unchanged.
+
+#### address-codec
+
+- Added `ErrInvalidEncodingType`, returned by `EncodeSeed` for an unknown encoding type.
+
+#### binary-codec
+
+- Added `types.ErrAccountIDNotString`, returned when an `AccountID` field receives a non-string JSON value.
+- Added `types.ErrInvalidVector256Length`, returned when a `Vector256` byte length is not a multiple of 32.
+- Added `types.ErrNumberUnderflow`, returned when a `Number` value is too small to represent.
+
+#### pkg/hexutil
+
+- Added `ErrInvalidHexLength`, returned by `DecodeFixedHex` when the decoded length does not match.
+
+#### xrpl/hash
+
+- Added `ErrInvalidMPTokenIssuanceID`, returned by `MPTokenIssuance` for an ID that is not 48 hex characters.
+
+#### xrpl/queries/common
+
+- Added `ErrInvalidLedgerSpecifier`, returned by `UnmarshalLedgerSpecifier` for an unknown ledger name.
+
+#### xrpl/queries/server
+
+- Added `ErrInvalidDefinitionFormatField`, returned by `DefinitionFormatField.Validate` for an empty name or an out-of-range optionality.
+
+#### xrpl/transaction
+
+- Added `ErrInvalidFee`, returned by `BaseTx` validation when `Fee` is not an unsigned integer.
+
+### Changed
+
+#### binary-codec
+
+- A `PathSet` step that is not an object now returns an error wrapping `types.ErrInvalidPathSet`. Its text gains the `invalid path set: ` prefix.
+
+#### pkg/hexutil
+
+- `DecodeFixedHex` length errors now start with `invalid hex length: `.
+
+#### xrpl/queries/server
+
+- `DefinitionFormatField.Validate` errors now start with `server_definitions: invalid format field: `.
+
 ### Fixed
 
 #### xrpl/transaction

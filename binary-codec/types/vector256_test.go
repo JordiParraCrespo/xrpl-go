@@ -71,7 +71,7 @@ func TestVector256_ToJson(t *testing.T) {
 			malleate: func(t *testing.T) (interfaces.BinaryParser, []int) {
 				return serdes.NewBinaryParser([]byte{0x00}, defs), []int{1}
 			},
-			err: errors.New("invalid Vector256 byte length 1: must be a multiple of 32"),
+			err: fmt.Errorf("%w 1: must be a multiple of 32", ErrInvalidVector256Length),
 		},
 		{
 			name: "pass - valid vector256",

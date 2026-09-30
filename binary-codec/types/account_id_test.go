@@ -2,6 +2,7 @@ package types
 
 import (
 	"errors"
+	"fmt"
 	"testing"
 
 	addresscodec "github.com/Peersyst/xrpl-go/address-codec"
@@ -67,7 +68,7 @@ func TestAccountID_FromJson(t *testing.T) {
 			name:        "Invalid input type",
 			input:       1, // should be a string
 			expected:    nil,
-			expectedErr: errors.New("expected a string but got int"),
+			expectedErr: fmt.Errorf("%w but got int", ErrAccountIDNotString),
 		},
 	}
 

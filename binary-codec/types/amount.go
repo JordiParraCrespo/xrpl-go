@@ -83,6 +83,7 @@ var (
 	errInvalidCurrencyFormat         = errors.New("invalid currency")
 	errInvalidIssuerFormat           = errors.New("invalid issuer")
 	errInvalidAmountType             = errors.New("invalid amount type")
+	errUnsupportedAmountValueType    = errors.New("unsupported type")
 	errFloat64AmountValue            = errors.New("float64 not allowed for amount value, string or json.Number must be used")
 
 	maxDropsBig = new(big.Int).SetUint64(maxNativeDrops)
@@ -688,6 +689,6 @@ func valueToString(v any) (string, error) {
 	case float64:
 		return "", errFloat64AmountValue
 	default:
-		return "", fmt.Errorf("unsupported type %T for amount value", x)
+		return "", fmt.Errorf("%w %T for amount value", errUnsupportedAmountValueType, x)
 	}
 }

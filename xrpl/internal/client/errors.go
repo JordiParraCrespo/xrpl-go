@@ -7,6 +7,8 @@ import (
 )
 
 var (
+	errDecodeTransactionBlob = errors.New("decode transaction blob")
+
 	// address
 
 	// ErrAddressFieldIsNotAString indicates that an address-bearing transaction
