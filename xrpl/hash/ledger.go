@@ -130,7 +130,7 @@ func MPTokenIssuance(issuanceIDHex string) (string, error) {
 	payload := ledgerSpaceMPTokenIssuance + issuanceIDHex
 	payloadBytes, err := hex.DecodeString(payload)
 	if err != nil {
-		return "", fmt.Errorf("failed to decode hex payload: %w", err)
+		return "", fmt.Errorf("%w: %w", ErrInvalidMPTokenIssuanceID, err)
 	}
 
 	return EncodeToHashString(payloadBytes), nil

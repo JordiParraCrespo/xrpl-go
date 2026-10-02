@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-Errors that were created inline now have sentinels, so callers can match them with `errors.Is`. Unless noted under Changed, the error text is unchanged.
+Errors that were created inline now have sentinels or error types, so callers can match them with `errors.Is` or `errors.As`. Unless noted under Changed, the error text is unchanged.
 
 #### address-codec
 
@@ -19,7 +19,7 @@ Errors that were created inline now have sentinels, so callers can match them wi
 #### binary-codec
 
 - Added `types.ErrAccountIDNotString`, returned when an `AccountID` field receives a non-string JSON value.
-- Added `types.ErrInvalidVector256Length`, returned when a `Vector256` byte length is not a multiple of 32.
+- Added the `types.ErrInvalidVector256Length` error type, returned when a `Vector256` byte length is not a multiple of 32. Match it with `errors.As`; its `Got` field holds the byte length.
 - Added `types.ErrNumberUnderflow`, returned when a `Number` value is too small to represent.
 
 #### pkg/hexutil
@@ -47,10 +47,21 @@ Errors that were created inline now have sentinels, so callers can match them wi
 #### binary-codec
 
 - A `PathSet` step that is not an object now returns an error wrapping `types.ErrInvalidPathSet`. Its text gains the `invalid path set: ` prefix.
+- A non-string `AccountID` value now returns `account ID must be a string: got <type>` instead of `expected a string but got <type>`.
+- An unknown field type now returns `unknown field type: type "<type>", field "<field>"` instead of `unknown type "<type>" for field "<field>"`.
+- An unsupported amount value type now returns `unsupported amount value type: <type>` instead of `unsupported type <type> for amount value`.
 
 #### pkg/hexutil
 
 - `DecodeFixedHex` length errors now start with `invalid hex length: `.
+
+#### xrpl/hash
+
+- `MPTokenIssuance` now returns an error wrapping `ErrInvalidMPTokenIssuanceID` for a 48-character ID that is not valid hex, instead of `failed to decode hex payload: ...`.
+
+#### xrpl/queries/common
+
+- `UnmarshalLedgerSpecifier` now returns `invalid ledger specifier: "<name>"` instead of `decoding LedgerTitle: invalid string <name>`.
 
 #### xrpl/queries/server
 
