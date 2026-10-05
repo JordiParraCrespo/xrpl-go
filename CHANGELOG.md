@@ -38,10 +38,6 @@ Errors that were created inline now have sentinels or error types, so callers ca
 
 - Added `ErrInvalidDefinitionFormatField`, returned by `DefinitionFormatField.Validate` for an empty name or an out-of-range optionality.
 
-#### xrpl/transaction
-
-- Added `ErrInvalidFee`, returned by `BaseTx` validation when `Fee` is not an unsigned integer.
-
 ### Changed
 
 #### binary-codec
