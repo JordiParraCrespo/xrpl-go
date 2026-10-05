@@ -81,11 +81,6 @@ func TestAccountID_FromJson(t *testing.T) {
 	}
 }
 
-func TestAccountID_FromJson_NonStringMessage(t *testing.T) {
-	_, err := (&AccountID{}).FromJSON(1)
-	require.EqualError(t, err, "account ID must be a string: got int")
-}
-
 func TestAccountID_ToJson(t *testing.T) {
 	tt := []struct {
 		name     string

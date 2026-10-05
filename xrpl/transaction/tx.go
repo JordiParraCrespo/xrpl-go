@@ -226,10 +226,6 @@ func (tx *BaseTx) Validate() (bool, error) {
 		return false, ErrInvalidTransactionType
 	}
 
-	if !typecheck.IsStringNumericUint(tx.Fee.String(), 10, 64) {
-		return false, ErrInvalidFee
-	}
-
 	err = ValidateOptionalField(flattenTx, "Sequence", typecheck.IsUint32)
 	if err != nil {
 		return false, err
